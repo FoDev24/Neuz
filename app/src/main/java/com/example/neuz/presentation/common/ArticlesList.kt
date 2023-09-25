@@ -1,13 +1,14 @@
 package com.example.neuz.presentation.common
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.neuz.domain.model.Article
+import com.example.neuz.presentation.Dimens.extraSmallPadding
+import com.example.neuz.presentation.Dimens.extraSmallPadding2
 import com.example.neuz.presentation.Dimens.mediumPadding1
 import com.example.neuz.presentation.Dimens.mediumPadding2
 
@@ -17,8 +18,22 @@ fun ArticlesList(
     articles: LazyPagingItems<Article>,
     onClick: (Article) -> Unit
 ) {
+    val handlePagingResult = handlePagingResult(articles = articles)
+    if (handlePagingResult) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(mediumPadding1),
+            contentPadding = PaddingValues(all = extraSmallPadding2)
+        ) {
+            items(count = articles.itemCount){
+                articles[it]?.let {
+                    ArticleCard(article = it, onClick = {onClick(it)})
+                }
+                }
+            }
+        }
+    }
 
-}
 
 
 @Composable
